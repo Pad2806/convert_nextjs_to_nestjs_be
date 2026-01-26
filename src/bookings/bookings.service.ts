@@ -91,6 +91,59 @@ export class BookingsService {
     return { bookingId: booking.id };
   }
 
+  async validateBooking(phone: string, appointmentDate: string) {
+    const client = this.supabaseService.getClient();
+
+    // Duplicate check
+    const { data: existingBooking } = await client
+      .from('bookings')
+      .select('id')
+      .eq('patient_phone', phone)
+      .gte('booking_time', `${appointmentDate}T00:00:00`)
+      .lte('booking_time', `${appointmentDate}T23:59:59`)
+      .in('status', ['paid', 'pending'])
+      .maybeSingle();
+
+    if (existingBooking) {
+      throw new Error(
+        'Số điện thoại này đã có lịch đặt chưa khám trong ngày này.',
+      );
+    }
+
+    return { valid: true };
+  }
+
+  async findOne(id: string) {
+    const { data: booking, error } = await this.supabaseService
+      .getClient()
+      .from('bookings')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !booking) {
+      throw new Error('Booking not found');
+    }
+
+    return booking;
+  }
+
+  async update(id: string, updateData: any) {
+    const { data: booking, error } = await this.supabaseService
+      .getClient()
+      .from('bookings')
+      .update(updateData)
+      .eq('id', id)
+      .select('*')
+      .single();
+
+    if (error || !booking) {
+      throw new Error('Update failed or booking not found');
+    }
+
+    return booking;
+  }
+
   async findAll(query: any) {
     const { phone, status, clinicId, page = 1, limit = 20 } = query;
     const from = (page - 1) * limit;

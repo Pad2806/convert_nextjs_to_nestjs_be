@@ -6,6 +6,14 @@ export declare class BookingsController {
     create(createBookingDto: CreateBookingDto): Promise<{
         bookingId: any;
     }>;
+    validate(body: {
+        phone: string;
+        appointmentDate: string;
+    }): Promise<{
+        valid: boolean;
+    }>;
+    update(id: string, body: any): Promise<any>;
+    findOne(id: string): Promise<any>;
     findAll(query: any): Promise<{
         data: any[];
         total: number;

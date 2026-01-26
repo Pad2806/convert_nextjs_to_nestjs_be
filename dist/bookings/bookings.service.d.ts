@@ -24,6 +24,11 @@ export declare class BookingsService {
     create(createBookingDto: CreateBookingDto): Promise<{
         bookingId: any;
     }>;
+    validateBooking(phone: string, appointmentDate: string): Promise<{
+        valid: boolean;
+    }>;
+    findOne(id: string): Promise<any>;
+    update(id: string, updateData: any): Promise<any>;
     findAll(query: any): Promise<{
         data: any[];
         total: number;

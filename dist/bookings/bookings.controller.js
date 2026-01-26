@@ -29,6 +29,30 @@ let BookingsController = class BookingsController {
             throw new common_1.HttpException({ error: error.message }, common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async validate(body) {
+        try {
+            return await this.bookingsService.validateBooking(body.phone, body.appointmentDate);
+        }
+        catch (error) {
+            throw new common_1.HttpException({ error: error.message }, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async update(id, body) {
+        try {
+            return await this.bookingsService.update(id, body);
+        }
+        catch (error) {
+            throw new common_1.HttpException({ error: error.message }, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async findOne(id) {
+        try {
+            return await this.bookingsService.findOne(id);
+        }
+        catch (error) {
+            throw new common_1.HttpException({ error: error.message }, common_1.HttpStatus.NOT_FOUND);
+        }
+    }
     async findAll(query) {
         try {
             return await this.bookingsService.findAll(query);
@@ -57,6 +81,28 @@ __decorate([
     __metadata("design:paramtypes", [create_booking_dto_1.CreateBookingDto]),
     __metadata("design:returntype", Promise)
 ], BookingsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('validate'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], BookingsController.prototype, "validate", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], BookingsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BookingsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),

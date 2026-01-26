@@ -2,8 +2,10 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Body,
   Query,
+  Param,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
@@ -20,6 +22,42 @@ export class BookingsController {
       return await this.bookingsService.create(createBookingDto);
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('validate')
+  async validate(@Body() body: { phone: string; appointmentDate: string }) {
+    try {
+      return await this.bookingsService.validateBooking(
+        body.phone,
+        body.appointmentDate,
+      );
+    } catch (error) {
+      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() body: any) {
+    try {
+      return await this.bookingsService.update(id, body);
+    } catch (error) {
+      throw new HttpException(
+        { error: error.message },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.bookingsService.findOne(id);
+    } catch (error) {
+      throw new HttpException(
+        { error: error.message },
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 

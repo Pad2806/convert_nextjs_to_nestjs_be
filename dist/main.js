@@ -7,7 +7,16 @@ async function bootstrap() {
         global.Headers = globalThis.Headers;
     }
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    await app.listen(process.env.PORT ?? 3000);
+    const frontendUrl = process.env.FRONTEND_URL;
+    const origins = [frontendUrl, 'http://localhost:3000'].filter((url) => !!url);
+    app.enableCors({
+        origin: origins,
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+    });
+    const port = process.env.PORT ?? 3001;
+    await app.listen(port);
+    console.log(`Backend is running on: http://localhost:${port}`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

@@ -8,6 +8,19 @@ async function bootstrap() {
   }
 
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+
+  // Enable CORS for frontend communication
+  const frontendUrl = process.env.FRONTEND_URL;
+  const origins = [frontendUrl, 'http://localhost:3000'].filter((url): url is string => !!url);
+
+  app.enableCors({
+    origin: origins,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
+  const port = process.env.PORT ?? 3001;
+  await app.listen(port);
+  console.log(`Backend is running on: http://localhost:${port}`);
 }
 bootstrap();
