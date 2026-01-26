@@ -16,6 +16,27 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) { }
 
+  @Get('available-slots')
+  async findAvailableSlots(
+    @Query('clinic_id') clinic_id: string,
+    @Query('service_id') service_id: string,
+    @Query('date') date: string,
+  ) {
+    try {
+      return await this.bookingsService.findAvailableSlots(
+        clinic_id,
+        service_id,
+        date,
+      );
+    } catch (error) {
+      const status =
+        error.message === 'Service not found'
+          ? HttpStatus.NOT_FOUND
+          : HttpStatus.BAD_REQUEST;
+      throw new HttpException({ error: error.message }, status);
+    }
+  }
+
   @Post()
   async create(@Body() createBookingDto: CreateBookingDto) {
     try {
@@ -73,24 +94,5 @@ export class BookingsController {
     }
   }
 
-  @Get('available-slots')
-  async findAvailableSlots(
-    @Query('clinic_id') clinic_id: string,
-    @Query('service_id') service_id: string,
-    @Query('date') date: string,
-  ) {
-    try {
-      return await this.bookingsService.findAvailableSlots(
-        clinic_id,
-        service_id,
-        date,
-      );
-    } catch (error) {
-      const status =
-        error.message === 'Service not found'
-          ? HttpStatus.NOT_FOUND
-          : HttpStatus.BAD_REQUEST;
-      throw new HttpException({ error: error.message }, status);
-    }
-  }
+
 }
