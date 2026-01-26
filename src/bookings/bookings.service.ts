@@ -240,8 +240,14 @@ export class BookingsService {
 
     const bookedByTime = new Map<string, number>();
     for (const b of bookings ?? []) {
-      // Postgrest returns time strings, sometimes ISO. Assuming 'booking_time' is ISO or similar.
-      const hhmm = String(b.booking_time).slice(11, 16);
+      // Use Date object to reliably extract HH:mm from ISO string or timestamp
+      const dt = new Date(b.booking_time);
+      if (isNaN(dt.getTime())) continue; // Skip invalid dates
+
+      const hh = String(dt.getHours()).padStart(2, '0');
+      const mm = String(dt.getMinutes()).padStart(2, '0');
+      const hhmm = `${hh}:${mm}`;
+
       bookedByTime.set(hhmm, (bookedByTime.get(hhmm) ?? 0) + 1);
     }
 
