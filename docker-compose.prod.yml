@@ -9,7 +9,7 @@ services:
     container_name: backend_prod
     restart: always
     ports:
-      - "3000:3000" 
+      - "3001:3000" 
     environment:
       # Dokploy sẽ tự điền giá trị này từ tab Environment bạn đã cài
       - DATABASE_URL=${DATABASE_URL}
