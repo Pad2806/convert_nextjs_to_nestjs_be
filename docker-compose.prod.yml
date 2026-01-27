@@ -6,7 +6,7 @@ services:
     # Ví dụ: ghcr.io/tuannguyen/booking-backend:latest
     image: ghcr.io/Pad2806/convert_nextjs_to_nestjs_be:latest
     
-    container_name: booking_backend
+    container_name: backend_prod
     restart: always
     ports:
       - "3000:3000" 
