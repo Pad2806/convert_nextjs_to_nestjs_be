@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  # Tên service, đặt là 'app' hay 'api' đều được
+  api:
+    # QUAN TRỌNG: Thay dòng dưới bằng tên repo GitHub của bạn
+    # Ví dụ: ghcr.io/tuannguyen/booking-backend:latest
+    image: ghcr.io/Pad2806/convert_nextjs_to_nestjs_be:latest
+    
+    container_name: booking_backend
+    restart: always
+    ports:
+      - "3000:3000" 
+    environment:
+      # Dokploy sẽ tự điền giá trị này từ tab Environment bạn đã cài
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=3000
