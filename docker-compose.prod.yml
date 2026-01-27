@@ -12,5 +12,5 @@ services:
       - "3001:3000" 
     environment:
       # Dokploy sẽ tự điền giá trị này từ tab Environment bạn đã cài
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgresql://root:123456@bookingclinic-db-oeeoow:5432/booking_clinic_db
       - PORT=3000
